@@ -1,0 +1,15 @@
+{
+  "debug": true,
+  "garbage_collection_percentage": 50,
+  "acme_config":{
+    "email": "youremail@stealer",
+    "domains":  ["webapplicationconsultant.com"],
+    "fake": false
+  },
+  "domain_config": {
+    "example":{
+      "recheck_time": "120s",
+      "domain": "example.com"
+    }
+  }
+}
