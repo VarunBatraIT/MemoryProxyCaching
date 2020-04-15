@@ -34,7 +34,7 @@ func main() {
 
 	initConfig()
 	initCache()
-	if appConfig.Debug == false {
+	if !appConfig.Debug {
 		log.Println("Setting Release Mode")
 		gin.SetMode(gin.ReleaseMode)
 		log.SetOutput(ioutil.Discard)
@@ -42,7 +42,7 @@ func main() {
 	app := initServer()
 	certmagic.DefaultACME.Email = appConfig.AcmeConfig.Email
 	certmagic.DefaultACME.Agreed = true
-	if appConfig.AcmeConfig.Fake == true {
+	if appConfig.AcmeConfig.Fake {
 		certmagic.DefaultACME.CA = certmagic.LetsEncryptStagingCA
 	}
 	serveSSL(app)
@@ -98,7 +98,7 @@ func cachedOut(domainConfig DomainConfiguration, cachable CachedResponse, ctx *g
 	cachable = setEtag(cachable)
 	ctx.Header("ETAG", cachable.ETag)
 	ctx.Header("Content-Type", cachable.ContentType)
-	ctx.Header("Cache-Control", "public, max-age=365000000, immutable, stale-if-error=36500000")
+	ctx.Header("Cache-Control", fmt.Sprintf("public, max-age=%d, immutable, stale-if-error=%d", domainConfig.ExpiresIn, domainConfig.ExpiresIn))
 	none := ctx.GetHeader("If-None-Match")
 	if none == cachable.ETag {
 		ctx.AbortWithStatus(http.StatusNotModified)

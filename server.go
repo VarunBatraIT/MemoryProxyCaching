@@ -92,7 +92,6 @@ func Handlers(app *gin.Engine) *gin.Engine {
 			i = 60 * time.Second
 		}
 		cache.Set(cachable.Url, toCache, i)
-		return
 	})
 	return app
 

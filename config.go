@@ -37,6 +37,8 @@ type DomainConfiguration struct {
 	Minify bool `mapstructure:"minify"`
 	// The useragent you want to use to hit the backend.
 	UserAgent string `mapstructure:"user_agent"`
+	// Expires in header
+	ExpiresIn int `mapstructure:"expires_in"`
 }
 
 func initConfig() {
