@@ -39,6 +39,8 @@ type DomainConfiguration struct {
 	UserAgent string `mapstructure:"user_agent"`
 	// Expires in header
 	ExpiresIn int `mapstructure:"expires_in"`
+	// Password to delete cache pre-time
+	Password string `mapstructure:"password"`
 }
 
 func initConfig() {

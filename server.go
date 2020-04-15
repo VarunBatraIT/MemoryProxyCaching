@@ -39,6 +39,11 @@ func Handlers(app *gin.Engine) *gin.Engine {
 		})
 	})
 	app.DELETE(":Domain/*Uri", func(ctx *gin.Context) {
+		password, exists := ctx.GetPostForm("password")
+		if !exists {
+			ctx.AbortWithStatus(http.StatusNotAcceptable)
+			return
+		}
 		domain := ctx.Param("Domain")
 		domainConfig, exists := appConfig.DomainConfig[domain]
 		if !exists {
@@ -46,12 +51,20 @@ func Handlers(app *gin.Engine) *gin.Engine {
 			ctx.AbortWithStatus(http.StatusNotAcceptable)
 			return
 		}
+
+		if password != domainConfig.Password {
+			log.Println("Pasword not mentioned")
+			ctx.AbortWithStatus(http.StatusUnauthorized)
+			return
+
+		}
 		url := GetURLToHit(ctx, domainConfig)
 		err := cache.Delete(url)
 		if err != nil {
 			log.Println("Deleted Cache ", url)
 			ctx.JSON(200, `{ "success": true}`)
 		} else {
+			log.Println(err)
 			ctx.JSON(http.StatusExpectationFailed, `{"success":false}`)
 		}
 	})

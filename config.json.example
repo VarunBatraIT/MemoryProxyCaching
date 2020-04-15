@@ -10,7 +10,8 @@
     "example":{
       "recheck_time": "120s",
       "domain": "example.com",
-      "expires_in": "30000"
+      "expires_in": "30000",
+      "password": "secret_password_for_delete_request"
     }
   }
 }
